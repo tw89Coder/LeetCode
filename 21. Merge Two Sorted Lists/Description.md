@@ -8,7 +8,7 @@ Merge the two lists into one sorted list. The list should be made by splicing to
 Return the head of the merged linked list.
 
 ## Example 1:
-
+![Example 1](https://github.com/tw89Coder/LeetCode/blob/main/21.%20Merge%20Two%20Sorted%20Lists/Picture/merge_ex1.jpg?raw=true)
 ```
   Input: list1 = [1,2,4], list2 = [1,3,4]
   Output: [1,1,2,3,4,4]
