@@ -1,22 +1,19 @@
 # 解題思路
 
 ### 目的：
-範例
+將給定的32位元有符號整數的數字反轉。如果反轉後的整數超出了32位元有符號整數範圍 [-2^31, 2^31 - 1]，則傳回0。
 ### 方法：
-- 範例
+- 初始化 reversed 變數為0，用於儲存反轉後的整數。
+- 使用 while 迴圈逐位處理輸入整數 x 的每一位數字。
+  - 使用 x % 10 提取目前的最後一位數字，並更新 x 去掉這個數字。
+  - 在更新 reversed 之前，檢查是否會發生溢位。具體檢查如下：
+    - 如果 reversed 大於 214748364，或等於 214748364 且 pop 大於7，則發生正溢出，回傳0。
+    - 如果 reversed 小於 -214748364，或等於 -214748364 且 pop 小於-8，則發生負溢出，回傳0。
+  - 如果不會發生溢出，將目前數字加入 reversed 中。
+- 傳回反轉後的整數 reversed。
 ### Language：
 Java
 ### Runtime：
 1 ms
 ### Memory： 
 40.89 MB
-
----
-## Java Class Stack
-
-### Definition and Usage
-The **`Stack`** class represents a last-in-first-out (LIFO) stack of objects. It extends class **Vector** with five operations that allow a vector to be treated as a stack. The usual push and pop operations are provided, as well as a method to **peek** at the top item on the stack, a method to test for whether the stack is **empty**, and a method to **search** the stack for an item and discover how far it is from the top.
-When a stack is first created, it contains no items.
-
-
-[Oracle Link](https://docs.oracle.com/javase/8/docs/api/java/util/`Stack`.html)
