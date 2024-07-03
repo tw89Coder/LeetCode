@@ -1,11 +1,11 @@
 class Solution {
     public String convert(String s, int numRows) {
-        // Edge case: if numRows is 1, return the string as is
-        if (numRows == 1) return s;
+        // Edge case: if numRows is 1 or s length is less than numRows, return the string as is
+        if (numRows == 1 || s.length() <= numRows) return s;
 
         // Create an array of StringBuilder, one for each row
-        StringBuilder[] rows = new StringBuilder[Math.min(numRows, s.length())];
-        for (int i = 0; i < rows.length; i++) {
+        StringBuilder[] rows = new StringBuilder[numRows];
+        for (int i = 0; i < numRows; i++) {
             rows[i] = new StringBuilder();
         }
 
