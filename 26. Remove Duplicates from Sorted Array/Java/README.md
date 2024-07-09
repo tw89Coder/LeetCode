@@ -1,22 +1,15 @@
 # 解題思路
 
 ### 目的：
-範例
+給定一個已排序的整數陣列 nums，要求就地移除重複項，使每個唯一元素只出現一次，並返回唯一元素的數量 k。改變後的陣列前 k 個元素應包含唯一元素，保持原順序。
 ### 方法：
-- 範例
+- 初始化一個指針 i 為 0，用於追蹤陣列中唯一元素的位置。
+- 使用另一個指針 j 從 1 開始遍歷陣列。
+- 如果 nums[j] 與 nums[i] 不同，則表示找到新的唯一元素。將 i 增加 1，並將 nums[i] 更新為 nums[j]。
+- 當遍歷結束後，i + 1 即為唯一元素的數量 k。
 ### Language：
 Java
 ### Runtime：
-2 ms
+0 ms
 ### Memory： 
-41.37 MB
-
----
-## Java Class Stack
-
-### Definition and Usage
-The **`Stack`** class represents a last-in-first-out (LIFO) stack of objects. It extends class **Vector** with five operations that allow a vector to be treated as a stack. The usual push and pop operations are provided, as well as a method to **peek** at the top item on the stack, a method to test for whether the stack is **empty**, and a method to **search** the stack for an item and discover how far it is from the top.
-When a stack is first created, it contains no items.
-
-
-[Oracle Link](https://docs.oracle.com/javase/8/docs/api/java/util/`Stack`.html)
+44.60 MB
