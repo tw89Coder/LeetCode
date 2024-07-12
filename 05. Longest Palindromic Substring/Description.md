@@ -1,7 +1,7 @@
 # 5. Longest Palindromic Substring
 ###### tags: `Medium`
 
-Given a string `s`, return the longest ==palindromic substring== in `s`.
+Given a string `s`, return the longest **==palindromic substring==** in `s`.
 
 > #### Palindromic
 >> A string is **palindromic** if it reads the same forward and backward.
