@@ -1,28 +1,30 @@
 #!/bin/bash
 
-# 檢查輸入參數
+# Check arguments
 if [ "$#" -ne 2 ]; then
-    echo "Usage: ./gen_problem.sh <Problem_ID> <Problem_Name>"
-    echo "Example: ./gen_problem.sh 1 \"Two Sum\""
+    echo "Usage: ./gen_problem.sh <Problem_Number> \"<Problem_Name>\""
     exit 1
 fi
 
-ID=$1
-NAME=$2
+PROB_NUM=$1
+PROB_NAME=$2
 
-# 計算分層範圍 (例如 1 變為 0001-0100)
-START=$(( ( (ID - 1) / 100 ) * 100 + 1 ))
+# Calculate directory hierarchy (e.g., 217 -> 0201-0300)
+START=$(( ( (PROB_NUM - 1) / 100 ) * 100 + 1 ))
 END=$(( START + 99 ))
-RANGE=$(printf "%04d-%04d" $START $END)
+RANGE_DIR=$(printf "%04d-%04d" $START $END)
+PROB_DIR=$(printf "%04d. %s" $PROB_NUM "$PROB_NAME")
 
-# 格式化問題資料夾名稱 (例如 0001. Two Sum)
-DIR_NAME=$(printf "%04d. %s" $ID "$NAME")
+TARGET_PATH="$RANGE_DIR/$PROB_DIR"
 
-# 建立路徑
-TARGET_PATH="$RANGE/$DIR_NAME"
-mkdir -p "$TARGET_PATH/cpp" "$TARGET_PATH/python"
+# Create directories
+mkdir -p "$TARGET_PATH"/{cpp,python,java,c}
 
-# 建立基礎檔案
+# Create empty files
 touch "$TARGET_PATH/Description.md"
+touch "$TARGET_PATH/python/Solution.py"
+touch "$TARGET_PATH/cpp/Solution.cpp"
+touch "$TARGET_PATH/java/Solution.java"
+touch "$TARGET_PATH/c/Solution.c"
 
-echo "✅ Created: $TARGET_PATH"
+echo "Successfully created boilerplate for: $PROB_DIR"
