@@ -1,17 +1,21 @@
-# The 5ms optimized version (len(set))
+# The manual loop version (Early exit)
 
 from typing import List
 
 class Solution:
     def containsDuplicate(self, nums: List[int]) -> bool:
         """
-        Optimized version for LeetCode's Python environment.
-        Utilizes C-level implementation of set() for maximum throughput.
+        Determines if any value appears at least twice in the array.
+        Approach: Hash Set for O(n) average time complexity.
         """
-        # Time: O(n) - Iteration happens in C
-        # Space: O(n) - Allocates memory for all unique elements
-        return len(nums) != len(set(nums))
-    
+        seen = set()
+        for num in nums:
+            if num in seen:
+                return True
+            seen.add(num)
+        return False
+
+# Unit Testing for Verification
 if __name__ == "__main__":
     sol = Solution()
     
@@ -25,3 +29,5 @@ if __name__ == "__main__":
         result = sol.containsDuplicate(test["input"])
         status = "PASSED" if result == test["expected"] else "FAILED"
         print(f"Test Case {i+1}: {status} (Input: {test['input']}, Result: {result})")
+        
+        from typing import List
