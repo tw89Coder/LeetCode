@@ -1,0 +1,37 @@
+# --- C/C++ ---
+*.o
+*.out
+*.exe
+*.dSYM/
+*.obj
+bin/
+build/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.class
+.venv/
+env/
+venv/
+.pytest_cache/
+
+# --- Java ---
+*.class
+*.log
+*.jar
+*.war
+*.ear
+target/
+
+# --- OS/IDE Junk ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+.nfs*
+
+# --- Git Specific ---
+.git/
