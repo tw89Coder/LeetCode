@@ -4,50 +4,54 @@ class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
         """
         Main Idea:
-        Use a monotonic increasing stack to track indices of heights. When we 
-        encounter a height smaller than the stack's top, it means the rectangle 
-        using the stack top's height as its minimum height has reached its 
-        right boundary. The new stack top after popping is its left boundary.
+        Instead of calculating the width by looking back at the stack after popping, 
+        we track the 'start index' for each height. When a height is popped, its 
+        total width is (current_index - start_index). This minimizes list lookups 
+        and arithmetic operations inside the loop.
 
         Complexity:
-            Time: O(n) - Linear pass through heights.
-            Space: O(n) - Stack stores indices.
+            Time: O(n) - Single pass with constant time operations.
+            Space: O(n) - Auxiliary stack to store (index, height) pairs.
         """
-        # Step 1: Add sentinel 0s to handle edge cases and empty the stack at the end.
-        # The 0 at the start simplifies width calculation (left boundary).
-        # The 0 at the end forces all remaining elements out of the stack.
-        heights = [0] + heights + [0]
-        stack = []
         max_area = 0
+        stack = [] # Stores pairs: (start_index, height)
         
-        # Localize method references for performance tuning
-        pop = stack.pop
+        # Localize stack methods for a small performance boost
         push = stack.append
+        pop = stack.pop
 
         for i, h in enumerate(heights):
-            # Step 2: While the current height is smaller than the height at stack top.
-            # This maintains the "monotonic increasing" property.
-            while stack and h < heights[stack[-1]]:
-                # The height of the rectangle we are calculating now.
-                height = heights[pop()]
-                
-                # Step 3: Determine the width.
-                # After popping, the current stack[-1] is the left boundary (exclusive).
-                # 'i' is the right boundary (exclusive).
-                # Width = (right - left - 1)
-                width = i - stack[-1] - 1
-                
-                area = height * width
+            # We assume the current height starts at its current index
+            start = i
+            
+            # When we find a shorter height, we trigger the area calculation 
+            # for all taller heights currently in the stack.
+            while stack and stack[-1][1] >= h:
+                # Pop the height and its starting index
+                index, height = pop()
+                # Calculate area: the height can span from its 'index' up to 'i'
+                area = height * (i - index)
                 if area > max_area:
                     max_area = area
+                # The current shorter height 'h' can extend back to the 
+                # 'index' of the taller height we just popped.
+                start = index
             
-            # Step 4: Push current index onto stack.
-            push(i)
-            
+            # Push the current height and its adjusted starting index
+            push((start, h))
+
+        # After the loop, process any remaining bars in the stack.
+        # These bars extend all the way to the right end of the histogram.
+        n = len(heights)
+        for index, height in stack:
+            area = height * (n - index)
+            if area > max_area:
+                max_area = area
+                
         return max_area
 
-# --- Standalone Test Execution ---
+# --- Standalone Test ---
 if __name__ == "__main__":
     sol = Solution()
-    # Example 1: [2, 1, 5, 6, 2, 3] -> Expected 10
-    print(f"Max Area: {sol.largestRectangleArea([2, 1, 5, 6, 2, 3])}")
+    # Test case: [2,1,5,6,2,3] -> Expected result 10
+    print(f"Largest Area: {sol.largestRectangleArea([2, 1, 5, 6, 2, 3])}")
