@@ -2,56 +2,59 @@ class Solution:
     def checkInclusion(self, s1: str, s2: str) -> bool:
         """
         Main Idea:
-        A permutation of s1 in s2 means a substring of s2 has the same character 
-        counts as s1. We use a sliding window of size len(s1) and a matches counter 
-         to track how many characters (out of 26) have identical counts.
+        Two strings are permutations if their character frequencies are identical. 
+        We use a fixed-size sliding window of length len(s1) across s2. 
         
+        Optimizations:
+        1. Pre-convert characters to integers to avoid repetitive ord() calls.
+        2. Utilize Python's internal list comparison (L1 == L2), which is 
+           implemented in C and is faster than manual match-counting in Python.
+
         Complexity:
-            Time: O(n) - Linear pass through s2.
-            Space: O(1) - Fixed size array (26 lowercase letters).
+            Time: O(n2) - Single pass with optimized bulk comparisons.
+            Space: O(n1 + n2) - Auxiliary integer index storage.
         """
-        if len(s1) > len(s2):
+        n1, n2 = len(s1), len(s2)
+        if n1 > n2:
             return False
 
-        # Use arrays instead of dicts for faster access (0-25 for a-z)
-        s1_count = [0] * 26
-        s2_count = [0] * 26
+        # Fixed frequency arrays for 26 lowercase English letters
+        target = [0] * 26
+        window = [0] * 26
+        a_ord = ord('a')
         
-        for i in range(len(s1)):
-            s1_count[ord(s1[i]) - ord('a')] += 1
-            s2_count[ord(s2[i]) - ord('a')] += 1
-
-        # Count initial matches across 26 characters
-        matches = 0
-        for i in range(26):
-            if s1_count[i] == s2_count[i]:
-                matches += 1
-
-        # Slide the window across s2
-        left = 0
-        for right in range(len(s1), len(s2)):
-            if matches == 26:
-                return True
-
-            # Logic for adding the right character
-            idx = ord(s2[right]) - ord('a')
-            s2_count[idx] += 1
-            if s1_count[idx] == s2_count[idx]:
-                matches += 1
-            elif s1_count[idx] + 1 == s2_count[idx]:
-                matches -= 1
-
-            # Logic for removing the left character
-            idx = ord(s2[left]) - ord('a')
-            s2_count[idx] -= 1
-            if s1_count[idx] == s2_count[idx]:
-                matches += 1
-            elif s1_count[idx] - 1 == s2_count[idx]:
-                matches -= 1
+        # Performance: Pre-convert strings to integer indices [0-25]
+        # This removes the function call overhead of ord() from the main loop.
+        s1_indices = [ord(c) - a_ord for c in s1]
+        s2_indices = [ord(c) - a_ord for c in s2]
+        
+        # Initialize the target frequency and the first sliding window
+        for i in range(n1):
+            target[s1_indices[i]] += 1
+            window[s2_indices[i]] += 1
             
-            left += 1
+        # Initial check for the first window
+        if target == window:
+            return True
+            
+        # Slide the window through s2_indices
+        for i in range(n1, n2):
+            # Update window frequency: Add the entering char, remove the exiting char
+            window[s2_indices[i]] += 1
+            window[s2_indices[i - n1]] -= 1
+            
+            # Optimization: List comparison in Python is highly optimized at 
+            # the bytecode level, outperforming manual 'match' increments.
+            if window == target:
+                return True
+                
+        return False
 
-        return matches == 26
+# --- Independent Test Execution ---
+if __name__ == "__main__":
+    sol = Solution()
+    # Case: s1 = "ab", s2 = "eidbaooo" -> "ba" is a permutation
+    print(f"Is Permutation present? {sol.checkInclusion('ab', 'eidbaooo')}")
 
 # --- Educational Test Suite ---
 if __name__ == "__main__":
