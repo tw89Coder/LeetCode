@@ -50,12 +50,6 @@ class Solution:
                 
         return False
 
-# --- Independent Test Execution ---
-if __name__ == "__main__":
-    sol = Solution()
-    # Case: s1 = "ab", s2 = "eidbaooo" -> "ba" is a permutation
-    print(f"Is Permutation present? {sol.checkInclusion('ab', 'eidbaooo')}")
-
 # --- Educational Test Suite ---
 if __name__ == "__main__":
     sol = Solution()
